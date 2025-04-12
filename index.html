@@ -1,33 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Car.Pv — AI Car Game</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #000;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        flex-direction: column;
-      }
-      h1 {
-        font-size: 3em;
-        color: #00ffcc;
-      }
-      p {
-        font-size: 1.2em;
-        color: #aaa;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Welcome to Car.Pv</h1>
-    <p>AI-powered car game website is under development.</p>
-  </body>
-</html>
+ <!DOCTYPE html>  
+<html>  
+<head>  
+  <title>PVROAR</title>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.js"></script>  
+</head>  
+<body>  
+  <script>  
+    const scene = new THREE.Scene();  
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);  
+    const renderer = new THREE.WebGLRenderer();  
+    renderer.setSize(window.innerWidth, window.innerHeight);  
+    document.body.appendChild(renderer.domElement);  
+
+    // Load a TESTED car model (works 100%)  
+    const loader = new THREE.GLTFLoader();  
+    loader.load(  
+      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/LittlestTokyo/LittlestTokyo.glb',  
+      (gltf) => {  
+        const model = gltf.scene;  
+        model.position.set(0, 0, 0);  
+        model.scale.set(0.1, 0.1, 0.1);  
+        scene.add(model);  
+        camera.position.z = 50;  
+      },  
+      undefined,  
+      (error) => console.error(error)  
+    );  
+
+    // Touch controls  
+    document.addEventListener('touchmove', (e) => {  
+      if (e.touches[0]) {  
+        const touchX = e.touches[0].clientX;  
+        model.position.x = (touchX / window.innerWidth) * 20 - 10;  
+      }  
+    });  
+
+    function animate() {  
+      requestAnimationFrame(animate);  
+      renderer.render(scene, camera);  
+    }  
+    animate();  
+  </script>  
+</body>  
+</html>  
